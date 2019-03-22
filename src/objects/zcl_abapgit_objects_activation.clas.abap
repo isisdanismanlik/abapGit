@@ -1,52 +1,61 @@
-CLASS zcl_abapgit_objects_activation DEFINITION PUBLIC CREATE PUBLIC.
+class ZCL_ABAPGIT_OBJECTS_ACTIVATION definition
+  public
+  create public .
 
-  PUBLIC SECTION.
-    CLASS-METHODS add
-      IMPORTING iv_type   TYPE trobjtype
-                iv_name   TYPE clike
-                iv_delete TYPE abap_bool DEFAULT abap_false
-      RAISING   zcx_abapgit_exception.
+public section.
 
-    CLASS-METHODS add_item
-      IMPORTING is_item TYPE zif_abapgit_definitions=>ty_item
-      RAISING   zcx_abapgit_exception.
-
-    CLASS-METHODS activate
-      IMPORTING iv_ddic TYPE abap_bool DEFAULT abap_false
-      RAISING   zcx_abapgit_exception.
-
-    CLASS-METHODS clear.
-
+  class-methods ADD
+    importing
+      !IV_TYPE type TROBJTYPE
+      !IV_NAME type CLIKE
+      !IV_DELETE type ABAP_BOOL default ABAP_FALSE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods ADD_ITEM
+    importing
+      !IS_ITEM type ZIF_ABAPGIT_DEFINITIONS=>TY_ITEM
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods ACTIVATE
+    importing
+      !IV_DDIC type ABAP_BOOL default ABAP_FALSE
+      !IV_FORCE type ABAP_BOOL default ABAP_FALSE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods CLEAR .
   PROTECTED SECTION.
-  PRIVATE SECTION.
+private section.
 
-    CLASS-DATA:
-      gt_classes TYPE STANDARD TABLE OF seoclsname WITH DEFAULT KEY .
-    CLASS-DATA:
-      gt_objects TYPE TABLE OF dwinactiv .
+  class-data:
+    gt_classes TYPE STANDARD TABLE OF seoclsname WITH DEFAULT KEY .
+  class-data:
+    gt_objects TYPE TABLE OF dwinactiv .
 
-    CLASS-METHODS update_where_used .
-    CLASS-METHODS use_new_activation_logic
-      RETURNING
-        VALUE(rv_use_new_activation_logic) TYPE abap_bool .
-    CLASS-METHODS activate_new
-      IMPORTING
-        !iv_ddic TYPE abap_bool DEFAULT abap_false
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS activate_old
-      IMPORTING
-        !iv_ddic TYPE abap_bool DEFAULT abap_false
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS activate_ddic
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS show_activation_errors
-      IMPORTING
-        !iv_logname TYPE ddmass-logname
-      RAISING
-        zcx_abapgit_exception .
+  class-methods UPDATE_WHERE_USED .
+  class-methods USE_NEW_ACTIVATION_LOGIC
+    returning
+      value(RV_USE_NEW_ACTIVATION_LOGIC) type ABAP_BOOL .
+  class-methods ACTIVATE_NEW
+    importing
+      !IV_DDIC type ABAP_BOOL default ABAP_FALSE
+      !IV_FORCE type ABAP_BOOL default ABAP_FALSE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods ACTIVATE_OLD
+    importing
+      !IV_DDIC type ABAP_BOOL default ABAP_FALSE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods ACTIVATE_DDIC
+    importing
+      !IV_DDMODE type DDMASS-DDMODE default 'O'
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods SHOW_ACTIVATION_ERRORS
+    importing
+      !IV_LOGNAME type DDMASS-LOGNAME
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
 ENDCLASS.
 
 
@@ -57,7 +66,8 @@ CLASS ZCL_ABAPGIT_OBJECTS_ACTIVATION IMPLEMENTATION.
   METHOD activate.
 
     IF use_new_activation_logic( ) = abap_true.
-      activate_new( iv_ddic ).
+      activate_new( iv_ddic  = iv_ddic
+                    iv_force = iv_force ).
     ELSE.
       activate_old( iv_ddic ).
     ENDIF.
@@ -101,7 +111,7 @@ CLASS ZCL_ABAPGIT_OBJECTS_ACTIVATION IMPLEMENTATION.
 
       CALL FUNCTION 'DD_MASS_ACT_C3'
         EXPORTING
-          ddmode         = 'O'
+          ddmode         = iv_ddmode
           medium         = 'T' " transport order
           device         = 'T' " saves to table DDRPH?
           version        = 'M' " activate newest
@@ -151,7 +161,12 @@ CLASS ZCL_ABAPGIT_OBJECTS_ACTIVATION IMPLEMENTATION.
       li_progress->show( iv_current = 98
                          iv_text    = 'Activating DDIC' ).
 
-      activate_ddic( ).
+      IF iv_force eq ABAP_TRUE.
+*       Activate anyway
+        activate_ddic( iv_ddmode = 'T' ).
+      ELSE.
+         activate_ddic( ).
+      ENDIF.
 
     ELSE.
 
