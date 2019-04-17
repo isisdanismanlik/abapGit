@@ -4,59 +4,59 @@ CLASS zcl_abapgit_zip DEFINITION
 
   PUBLIC SECTION.
 
-    CLASS-METHODS EXPORT
+    CLASS-METHODS export
       IMPORTING
-        !io_repo TYPE REF TO zcl_abapgit_repo
-        !it_filter TYPE ZIF_ABAPGIT_DEFINITIONS=>TY_TADIR_TT optional
+        !io_repo   TYPE REF TO zcl_abapgit_repo
+        !it_filter TYPE zif_abapgit_definitions=>ty_tadir_tt optional
       RAISING
         zcx_abapgit_exception .
-    CLASS-METHODS EXPORT_OBJECT
+    CLASS-METHODS export_object
       RAISING
         zcx_abapgit_exception
-        ZCX_ABAPGIT_CANCEL .
+        zcx_abapgit_cancel .
     CLASS-METHODS EXPORT_PACKAGE
       RAISING
         zcx_abapgit_exception
-        ZCX_ABAPGIT_CANCEL .
+        zcx_abapgit_cancel .
     CLASS-METHODS LOAD
       RETURNING
-        value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+        VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_files_tt
       RAISING
         zcx_abapgit_exception .
-    CLASS-METHODS FILE_DOWNLOAD
+    CLASS-METHODS file_download
       IMPORTING
-        !IV_PACKAGE type DEVCLASS
-        !IV_XSTR type XSTRING
+        !iv_package TYPE devclass
+        !iv_xstr TYPE xstring
       RAISING
         zcx_abapgit_exception .
     CLASS-METHODS ENCODE_FILES
       IMPORTING
-        !IT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_ITEM_TT
+        !IT_FILES TYPE ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_ITEM_TT
       RETURNING
-        value(RV_XSTR) type XSTRING
+        value(RV_XSTR) TYPE xstring
       RAISING
         zcx_abapgit_exception .
     PROTECTED SECTION.
   PRIVATE SECTION.
 
-  CLASS-METHODS FILENAME
+  CLASS-METHODS filename
     IMPORTING
-      !IV_STR type STRING
+      !iv_str TYPE string
     EXPORTING
-      !EV_PATH type STRING
-      !EV_FILENAME type STRING
+      !ev_path TYPE string
+      !ev_filename TYPE string
     RAISING
       zcx_abapgit_exception .
-  CLASS-METHODS NORMALIZE_PATH
+  CLASS-METHODS normalize_path
     CHANGING
-      !CT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+      !ct_files TYPE zif_abapgit_definitions=>ty_files_tt
     RAISING
       zcx_abapgit_exception .
   CLASS-METHODS UNZIP_FILE
     IMPORTING
-      !IV_XSTR type XSTRING
+      !iv_xstr TYPE xstring
     RETURNING
-      value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+      VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_files_tt
     RAISING
       zcx_abapgit_exception .
 ENDCLASS.
