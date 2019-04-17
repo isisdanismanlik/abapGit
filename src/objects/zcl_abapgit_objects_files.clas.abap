@@ -79,24 +79,34 @@ CLASS zcl_abapgit_objects_files DEFINITION
     METHODS get_accessed_files
       RETURNING
         VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_file_signatures_tt .
+    METHODS contains
+      IMPORTING
+        !iv_extra TYPE clike OPTIONAL
+        !iv_ext   TYPE string
+      RETURNING
+        VALUE(rv_present) TYPE abap_bool.
   PROTECTED SECTION.
+
+    METHODS read_file
+      IMPORTING
+        !iv_filename   TYPE string
+        !iv_error      TYPE abap_bool DEFAULT abap_true
+      RETURNING
+        VALUE(rv_data) TYPE xstring
+      RAISING
+        zcx_abapgit_exception .
+    METHODS filename
+      IMPORTING
+        !iv_extra          TYPE clike OPTIONAL
+        !iv_ext            TYPE string
+      RETURNING
+        VALUE(rv_filename) TYPE string .
   PRIVATE SECTION.
-    DATA: ms_item           TYPE zif_abapgit_definitions=>ty_item,
-          mt_accessed_files TYPE zif_abapgit_definitions=>ty_file_signatures_tt,
-          mt_files          TYPE zif_abapgit_definitions=>ty_files_tt,
-          mv_path           TYPE string.
 
-    METHODS:
-      read_file
-        IMPORTING iv_filename TYPE string
-                  iv_error    TYPE abap_bool DEFAULT abap_true
-        EXPORTING ev_data     TYPE xstring
-        RAISING   zcx_abapgit_exception,
-      filename
-        IMPORTING iv_extra           TYPE clike OPTIONAL
-                  iv_ext             TYPE string
-        RETURNING VALUE(rv_filename) TYPE string.
-
+    DATA ms_item TYPE zif_abapgit_definitions=>ty_item .
+    DATA mt_accessed_files TYPE zif_abapgit_definitions=>ty_file_signatures_tt .
+    DATA mt_files TYPE zif_abapgit_definitions=>ty_files_tt .
+    DATA mv_path TYPE string .
 ENDCLASS.
 
 
@@ -190,6 +200,25 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD contains.
+    DATA: lv_filename TYPE string.
+
+    lv_filename = filename( iv_extra = iv_extra
+                            iv_ext   = iv_ext ).
+
+    IF mv_path IS NOT INITIAL.
+      READ TABLE mt_files TRANSPORTING NO FIELDS WITH KEY path     = mv_path
+                                                          filename = lv_filename.
+    ELSE.
+      READ TABLE mt_files TRANSPORTING NO FIELDS WITH KEY filename = lv_filename.
+    ENDIF.
+
+    IF sy-subrc = 0.
+      rv_present = abap_true.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD filename.
 
     DATA: lv_obj_name TYPE string.
@@ -243,9 +272,8 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
     lv_filename = filename( iv_extra = iv_extra
                             iv_ext   = 'abap' ).            "#EC NOTEXT
 
-    read_file( EXPORTING iv_filename = lv_filename
-                         iv_error    = iv_error
-               IMPORTING ev_data     = lv_data ).
+    lv_data = read_file( iv_filename = lv_filename
+                         iv_error    = iv_error ).
 
     IF lv_data IS INITIAL. " Post-handling of iv_error = false
       RETURN.
@@ -263,7 +291,6 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
     FIELD-SYMBOLS: <ls_file>     LIKE LINE OF mt_files,
                    <ls_accessed> LIKE LINE OF mt_accessed_files.
 
-    CLEAR ev_data.
 
     IF mv_path IS NOT INITIAL.
       READ TABLE mt_files ASSIGNING <ls_file> WITH KEY path     = mv_path
@@ -288,7 +315,7 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
       MOVE-CORRESPONDING <ls_file> TO <ls_accessed>.
     ENDIF.
 
-    ev_data = <ls_file>-data.
+    rv_data = <ls_file>-data.
 
   ENDMETHOD.
 
@@ -300,8 +327,7 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
     lv_filename = filename( iv_extra = iv_extra
                             iv_ext   = iv_ext ).
 
-    read_file( EXPORTING iv_filename = lv_filename
-               IMPORTING ev_data     = rv_data ).
+    rv_data = read_file( lv_filename ).
 
   ENDMETHOD.
 
@@ -314,8 +340,7 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
     lv_filename = filename( iv_extra = iv_extra
                             iv_ext   = iv_ext ).            "#EC NOTEXT
 
-    read_file( EXPORTING iv_filename = lv_filename
-               IMPORTING ev_data     = lv_data ).
+    lv_data = read_file( lv_filename ).
 
     rv_string = zcl_abapgit_convert=>xstring_to_string_utf8( lv_data ).
 
@@ -331,14 +356,14 @@ CLASS ZCL_ABAPGIT_OBJECTS_FILES IMPLEMENTATION.
     lv_filename = filename( iv_extra = iv_extra
                             iv_ext   = 'xml' ).             "#EC NOTEXT
 
-    read_file( EXPORTING iv_filename = lv_filename
-               IMPORTING ev_data     = lv_data ).
+    lv_data = read_file( lv_filename ).
 
     lv_xml = zcl_abapgit_convert=>xstring_to_string_utf8( lv_data ).
 
     CREATE OBJECT ro_xml
       EXPORTING
-        iv_xml = lv_xml.
+        iv_xml      = lv_xml
+        iv_filename = lv_filename.
 
   ENDMETHOD.
 
