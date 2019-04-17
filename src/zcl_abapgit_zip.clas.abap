@@ -7,18 +7,18 @@ CLASS zcl_abapgit_zip DEFINITION
     CLASS-METHODS export
       IMPORTING
         !io_repo   TYPE REF TO zcl_abapgit_repo
-        !it_filter TYPE zif_abapgit_definitions=>ty_tadir_tt optional
+        !it_filter TYPE zif_abapgit_definitions=>ty_tadir_tt OPTIONAL
       RAISING
         zcx_abapgit_exception .
     CLASS-METHODS export_object
       RAISING
         zcx_abapgit_exception
         zcx_abapgit_cancel .
-    CLASS-METHODS EXPORT_PACKAGE
+    CLASS-METHODS export_package
       RAISING
         zcx_abapgit_exception
         zcx_abapgit_cancel .
-    CLASS-METHODS LOAD
+    CLASS-METHODS load
       RETURNING
         VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_files_tt
       RAISING
@@ -29,9 +29,9 @@ CLASS zcl_abapgit_zip DEFINITION
         !iv_xstr TYPE xstring
       RAISING
         zcx_abapgit_exception .
-    CLASS-METHODS ENCODE_FILES
+    CLASS-METHODS encode_files
       IMPORTING
-        !IT_FILES TYPE ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_ITEM_TT
+        !it_files TYPE zif_abapgit_definitions=>ty_files_item_tt
       RETURNING
         value(RV_XSTR) TYPE xstring
       RAISING
