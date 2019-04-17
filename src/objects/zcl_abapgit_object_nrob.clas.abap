@@ -172,7 +172,7 @@ CLASS ZCL_ABAPGIT_OBJECT_NROB IMPLEMENTATION.
         object_text_missing       = 4
         wrong_indicator           = 5
         OTHERS                    = 6.
-    IF sy-subrc <> 0.
+    IF sy-subrc <> 0 and sy-subrc <> 1.
       zcx_abapgit_exception=>raise( 'error from NUMBER_RANGE_OBJECT_UPDATE' ).
     ENDIF.
 

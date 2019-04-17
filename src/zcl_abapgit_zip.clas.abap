@@ -1,64 +1,64 @@
-CLASS zcl_abapgit_zip DEFINITION
-  PUBLIC
-  CREATE PUBLIC .
+class ZCL_ABAPGIT_ZIP definition
+  public
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    CLASS-METHODS export
-      IMPORTING
-        !io_repo   TYPE REF TO zcl_abapgit_repo
-        !it_filter TYPE zif_abapgit_definitions=>ty_tadir_tt OPTIONAL
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS export_object
-      RAISING
-        zcx_abapgit_exception
-        zcx_abapgit_cancel .
-    CLASS-METHODS export_package
-      RAISING
-        zcx_abapgit_exception
-        zcx_abapgit_cancel .
-    CLASS-METHODS load
-      RETURNING
-        VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_files_tt
-      RAISING
-        zcx_abapgit_exception .
+  class-methods EXPORT
+    importing
+      !IO_REPO type ref to ZCL_ABAPGIT_REPO
+      !IT_FILTER type ZIF_ABAPGIT_DEFINITIONS=>TY_TADIR_TT optional
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods EXPORT_OBJECT
+    raising
+      ZCX_ABAPGIT_EXCEPTION
+      ZCX_ABAPGIT_CANCEL .
+  class-methods EXPORT_PACKAGE
+    raising
+      ZCX_ABAPGIT_EXCEPTION
+      ZCX_ABAPGIT_CANCEL .
+  class-methods LOAD
+    returning
+      value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods FILE_DOWNLOAD
+    importing
+      !IV_PACKAGE type DEVCLASS
+      !IV_XSTR type XSTRING
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods ENCODE_FILES
+    importing
+      !IT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_ITEM_TT
+    returning
+      value(RV_XSTR) type XSTRING
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
   PROTECTED SECTION.
-  PRIVATE SECTION.
+private section.
 
-    CLASS-METHODS encode_files
-      IMPORTING
-        !it_files      TYPE zif_abapgit_definitions=>ty_files_item_tt
-      RETURNING
-        VALUE(rv_xstr) TYPE xstring
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS filename
-      IMPORTING
-        !iv_str      TYPE string
-      EXPORTING
-        !ev_path     TYPE string
-        !ev_filename TYPE string
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS file_download
-      IMPORTING
-        !iv_package TYPE devclass
-        !iv_xstr    TYPE xstring
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS normalize_path
-      CHANGING
-        !ct_files TYPE zif_abapgit_definitions=>ty_files_tt
-      RAISING
-        zcx_abapgit_exception .
-    CLASS-METHODS unzip_file
-      IMPORTING
-        !iv_xstr        TYPE xstring
-      RETURNING
-        VALUE(rt_files) TYPE zif_abapgit_definitions=>ty_files_tt
-      RAISING
-        zcx_abapgit_exception .
+  class-methods FILENAME
+    importing
+      !IV_STR type STRING
+    exporting
+      !EV_PATH type STRING
+      !EV_FILENAME type STRING
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods NORMALIZE_PATH
+    changing
+      !CT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods UNZIP_FILE
+    importing
+      !IV_XSTR type XSTRING
+    returning
+      value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
 ENDCLASS.
 
 
