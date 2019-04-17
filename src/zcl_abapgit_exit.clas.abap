@@ -15,7 +15,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_ABAPGIT_EXIT IMPLEMENTATION.
+CLASS zcl_abapgit_exit IMPLEMENTATION.
 
 
   METHOD get_instance.
@@ -100,7 +100,7 @@ CLASS ZCL_ABAPGIT_EXIT IMPLEMENTATION.
         gi_exit->change_tadir(
           EXPORTING
             iv_package = iv_package
-            io_log     = io_log
+            ii_log     = ii_log
           CHANGING
             ct_tadir   = ct_tadir ).
       CATCH cx_sy_ref_is_initial cx_sy_dyn_call_illegal_method ##NO_HANDLER.
@@ -142,5 +142,12 @@ CLASS ZCL_ABAPGIT_EXIT IMPLEMENTATION.
       CATCH cx_sy_ref_is_initial cx_sy_dyn_call_illegal_method ##NO_HANDLER.
     ENDTRY.
 
+  ENDMETHOD.
+
+  METHOD zif_abapgit_exit~custom_serialize_abap_clif.
+    TRY.
+        rt_source = gi_exit->custom_serialize_abap_clif( is_class_key ).
+      CATCH cx_sy_ref_is_initial cx_sy_dyn_call_illegal_method ##NO_HANDLER.
+    ENDTRY.
   ENDMETHOD.
 ENDCLASS.

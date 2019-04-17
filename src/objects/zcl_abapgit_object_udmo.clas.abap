@@ -205,6 +205,7 @@ CLASS ZCL_ABAPGIT_OBJECT_UDMO IMPLEMENTATION.
         master_language     = mv_language
         mode                = 'INSERT'
         global_lock         = abap_true
+        suppress_dialog     = abap_true
       EXCEPTIONS
         cancelled           = 1
         permission_failure  = 2
@@ -242,10 +243,6 @@ CLASS ZCL_ABAPGIT_OBJECT_UDMO IMPLEMENTATION.
 
 
   METHOD deserialize_long_texts.
-
-    TYPES BEGIN OF language_type.
-    TYPES language TYPE dm40t-sprache.
-    TYPES END OF language_type.
 
     DATA BEGIN OF ls_udmo_long_text.
     DATA language TYPE dm40t-sprache.
@@ -774,7 +771,7 @@ CLASS ZCL_ABAPGIT_OBJECT_UDMO IMPLEMENTATION.
     ENDIF.
 
     serialize_model( io_xml ).
-    me->serialize_entities( io_xml  ).
+    me->serialize_entities( io_xml ).
     me->serialize_short_texts( io_xml ).
     me->serialize_long_texts( io_xml ).
 
