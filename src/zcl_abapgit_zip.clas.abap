@@ -36,7 +36,7 @@ CLASS zcl_abapgit_zip DEFINITION
         value(RV_XSTR) TYPE xstring
       RAISING
         zcx_abapgit_exception .
-    PROTECTED SECTION.
+  PROTECTED SECTION.
   PRIVATE SECTION.
 
   CLASS-METHODS filename
@@ -52,7 +52,7 @@ CLASS zcl_abapgit_zip DEFINITION
       !ct_files TYPE zif_abapgit_definitions=>ty_files_tt
     RAISING
       zcx_abapgit_exception .
-  CLASS-METHODS UNZIP_FILE
+  CLASS-METHODS unzip_file
     IMPORTING
       !iv_xstr TYPE xstring
     RETURNING
