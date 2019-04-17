@@ -1,63 +1,63 @@
-class ZCL_ABAPGIT_ZIP definition
-  public
-  create public .
+CLASS ZCL_ABAPGIT_ZIP DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
-public section.
+PUBLIC SECTION.
 
-  class-methods EXPORT
-    importing
-      !IO_REPO type ref to ZCL_ABAPGIT_REPO
-      !IT_FILTER type ZIF_ABAPGIT_DEFINITIONS=>TY_TADIR_TT optional
-    raising
+  CLASS-METHODS EXPORT
+    IMPORTING
+      !IO_REPO TYPE REF TO ZCL_ABAPGIT_REPO
+      !IT_FILTER TYPE ZIF_ABAPGIT_DEFINITIONS=>TY_TADIR_TT OPTIONAL
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
-  class-methods EXPORT_OBJECT
-    raising
+  CLASS-METHODS EXPORT_OBJECT
+    RAISING
       ZCX_ABAPGIT_EXCEPTION
       ZCX_ABAPGIT_CANCEL .
-  class-methods EXPORT_PACKAGE
-    raising
+  CLASS-METHODS EXPORT_PACKAGE
+    RAISING
       ZCX_ABAPGIT_EXCEPTION
       ZCX_ABAPGIT_CANCEL .
-  class-methods LOAD
-    returning
+  CLASS-METHODS LOAD
+    RETURNING
       value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
-  class-methods FILE_DOWNLOAD
-    importing
+  CLASS-METHODS FILE_DOWNLOAD
+    IMPORTING
       !IV_PACKAGE type DEVCLASS
       !IV_XSTR type XSTRING
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
-  class-methods ENCODE_FILES
-    importing
+  CLASS-METHODS ENCODE_FILES
+    IMPORTING
       !IT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_ITEM_TT
-    returning
+    RETURNING
       value(RV_XSTR) type XSTRING
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
   PROTECTED SECTION.
-private section.
+PRIVATE SECTION.
 
-  class-methods FILENAME
-    importing
+  CLASS-METHODS FILENAME
+    IMPORTING
       !IV_STR type STRING
-    exporting
+    EXPORTING
       !EV_PATH type STRING
       !EV_FILENAME type STRING
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
-  class-methods NORMALIZE_PATH
-    changing
+  CLASS-METHODS NORMALIZE_PATH
+    CHANGING
       !CT_FILES type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
-  class-methods UNZIP_FILE
-    importing
+  CLASS-METHODS UNZIP_FILE
+    IMPORTING
       !IV_XSTR type XSTRING
-    returning
+    RETURNING
       value(RT_FILES) type ZIF_ABAPGIT_DEFINITIONS=>TY_FILES_TT
-    raising
+    RAISING
       ZCX_ABAPGIT_EXCEPTION .
 ENDCLASS.
 
