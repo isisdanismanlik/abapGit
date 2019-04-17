@@ -1,130 +1,130 @@
-CLASS zcl_abapgit_gui_router DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_ABAPGIT_GUI_ROUTER definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    INTERFACES zif_abapgit_gui_event_handler.
+  interfaces ZIF_ABAPGIT_GUI_EVENT_HANDLER .
 
+  class-methods FILE_DOWNLOAD
+    importing
+      !IV_PACKAGE type DEVCLASS
+      !IV_XSTR type XSTRING
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
   PROTECTED SECTION.
-  PRIVATE SECTION.
+private section.
 
-    TYPES:
-      BEGIN OF ty_event_data,
+  types:
+    BEGIN OF ty_event_data,
         action    TYPE string,
         prev_page TYPE string,
         getdata   TYPE string,
         postdata  TYPE cnht_post_data_tab,
       END OF ty_event_data .
 
-    METHODS general_page_routing
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS abapgit_services_actions
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS db_actions
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    CLASS-METHODS file_download
-      IMPORTING
-        !iv_package TYPE devclass
-        !iv_xstr    TYPE xstring
-      RAISING
-        zcx_abapgit_exception .
-    METHODS git_services
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS remote_origin_manipulations
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS sap_gui_actions
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS zip_services
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS repository_services
-      IMPORTING
-        !is_event_data TYPE ty_event_data
-      EXPORTING
-        !ei_page       TYPE REF TO zif_abapgit_gui_renderable
-        !ev_state      TYPE i
-      RAISING
-        zcx_abapgit_exception.
-    METHODS get_page_diff
-      IMPORTING
-        !iv_getdata    TYPE clike
-        !iv_prev_page  TYPE clike
-      RETURNING
-        VALUE(ri_page) TYPE REF TO zif_abapgit_gui_renderable
-      RAISING
-        zcx_abapgit_exception .
-    METHODS get_page_branch_overview
-      IMPORTING
-        !iv_getdata    TYPE clike
-      RETURNING
-        VALUE(ri_page) TYPE REF TO zif_abapgit_gui_renderable
-      RAISING
-        zcx_abapgit_exception .
-    METHODS get_page_stage
-      IMPORTING
-        !iv_getdata    TYPE clike
-      RETURNING
-        VALUE(ri_page) TYPE REF TO zif_abapgit_gui_renderable
-      RAISING
-        zcx_abapgit_exception .
-    METHODS get_page_background
-      IMPORTING
-        !iv_key        TYPE zif_abapgit_persistence=>ty_repo-key
-      RETURNING
-        VALUE(ri_page) TYPE REF TO zif_abapgit_gui_renderable
-      RAISING
-        zcx_abapgit_exception .
-    METHODS get_page_playground
-      RETURNING
-        VALUE(ri_page) TYPE REF TO zif_abapgit_gui_renderable
-      RAISING
-        zcx_abapgit_exception.
-    CLASS-METHODS jump_display_transport
-      IMPORTING
-        !iv_getdata TYPE clike .
+  methods GENERAL_PAGE_ROUTING
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods ABAPGIT_SERVICES_ACTIONS
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods DB_ACTIONS
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GIT_SERVICES
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods REMOTE_ORIGIN_MANIPULATIONS
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods SAP_GUI_ACTIONS
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods ZIP_SERVICES
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods REPOSITORY_SERVICES
+    importing
+      !IS_EVENT_DATA type TY_EVENT_DATA
+    exporting
+      !EI_PAGE type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+      !EV_STATE type I
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GET_PAGE_DIFF
+    importing
+      !IV_GETDATA type CLIKE
+      !IV_PREV_PAGE type CLIKE
+    returning
+      value(RI_PAGE) type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GET_PAGE_BRANCH_OVERVIEW
+    importing
+      !IV_GETDATA type CLIKE
+    returning
+      value(RI_PAGE) type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GET_PAGE_STAGE
+    importing
+      !IV_GETDATA type CLIKE
+    returning
+      value(RI_PAGE) type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GET_PAGE_BACKGROUND
+    importing
+      !IV_KEY type ZIF_ABAPGIT_PERSISTENCE=>TY_REPO-KEY
+    returning
+      value(RI_PAGE) type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  methods GET_PAGE_PLAYGROUND
+    returning
+      value(RI_PAGE) type ref to ZIF_ABAPGIT_GUI_RENDERABLE
+    raising
+      ZCX_ABAPGIT_EXCEPTION .
+  class-methods JUMP_DISPLAY_TRANSPORT
+    importing
+      !IV_GETDATA type CLIKE .
 ENDCLASS.
 
 
