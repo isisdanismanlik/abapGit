@@ -10,7 +10,7 @@ CLASS zcl_abapgit_gui_page_boverview DEFINITION
       constructor
         IMPORTING io_repo TYPE REF TO zcl_abapgit_repo_online
         RAISING   zcx_abapgit_exception,
-      zif_abapgit_gui_page~on_event REDEFINITION.
+      zif_abapgit_gui_event_handler~on_event REDEFINITION.
 
   PROTECTED SECTION.
     METHODS render_content REDEFINITION.
@@ -263,6 +263,7 @@ CLASS zcl_abapgit_gui_page_boverview IMPLEMENTATION.
 
     rv_string = iv_string.
 
+    REPLACE ALL OCCURRENCES OF '\' IN rv_string WITH '\\'.
     REPLACE ALL OCCURRENCES OF '"' IN rv_string WITH '\"'.
 
   ENDMETHOD.
@@ -333,7 +334,7 @@ CLASS zcl_abapgit_gui_page_boverview IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD zif_abapgit_gui_page~on_event.
+  METHOD zif_abapgit_gui_event_handler~on_event.
 
     DATA: ls_merge TYPE ty_merge,
           lo_merge TYPE REF TO zcl_abapgit_gui_page_merge.
@@ -342,15 +343,15 @@ CLASS zcl_abapgit_gui_page_boverview IMPLEMENTATION.
     CASE iv_action.
       WHEN c_actions-refresh.
         refresh( ).
-        ev_state = zif_abapgit_definitions=>c_event_state-re_render.
+        ev_state = zcl_abapgit_gui=>c_event_state-re_render.
       WHEN c_actions-uncompress.
         mv_compress = abap_false.
         refresh( ).
-        ev_state = zif_abapgit_definitions=>c_event_state-re_render.
+        ev_state = zcl_abapgit_gui=>c_event_state-re_render.
       WHEN c_actions-compress.
         mv_compress = abap_true.
         refresh( ).
-        ev_state = zif_abapgit_definitions=>c_event_state-re_render.
+        ev_state = zcl_abapgit_gui=>c_event_state-re_render.
       WHEN c_actions-merge.
         ls_merge = decode_merge( it_postdata ).
         CREATE OBJECT lo_merge
@@ -359,7 +360,17 @@ CLASS zcl_abapgit_gui_page_boverview IMPLEMENTATION.
             iv_source = ls_merge-source
             iv_target = ls_merge-target.
         ei_page = lo_merge.
-        ev_state = zif_abapgit_definitions=>c_event_state-new_page.
+        ev_state = zcl_abapgit_gui=>c_event_state-new_page.
+      WHEN OTHERS.
+        super->zif_abapgit_gui_event_handler~on_event(
+          EXPORTING
+            iv_action    = iv_action
+            iv_prev_page = iv_prev_page
+            iv_getdata   = iv_getdata
+            it_postdata  = it_postdata
+          IMPORTING
+            ei_page      = ei_page
+            ev_state     = ev_state  ).
     ENDCASE.
 
   ENDMETHOD.
