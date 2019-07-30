@@ -4,7 +4,6 @@ category: reference
 order: 20
 ---
 
-
 Type   | Description   | Supported
 :------------ | :------------ | ------------:
 ACID | Checkpoint Group | Yes
@@ -47,13 +46,19 @@ ENQU | Lock Object | Yes
 ENSC | Composite Enhancement Spot | Yes
 FORM | SAPscript form | Yes
 FUGR | Function Group | Yes
+G4BA | SAP Gateway OData V4 Backend Service Group & Assigments | [#2704](https://github.com/larshp/abapGit/issues/2704)
+G4BS | SAP Gateway OData V4 Backend Service | [#2704](https://github.com/larshp/abapGit/issues/2704)
 IAMU | Language-Independent IAC Binary Data | Yes
 IARP | Parameters of IAC Language Resource | Yes
 IASP | Parameters of an IAC service | Yes
 IATU | Language-Independent IAC Templates | Yes
 IDOC | IDoc Type | Yes
 IEXT | Enhancement | Yes
-IWPR | Gateway Business Suite Enablement - Service Builder Project | [#75](https://github.com/larshp/abapGit/issues/75)
+IWMO |Gateway Business Suite Enablement - Model | Yes
+IWOM | Gateway: Model Metadata | Yes
+IWPR | Gateway Business Suite Enablement - Service Builder Project | Yes
+IWSG | Gateway: Service Groups Metadata | Yes
+IWSV | Gateway Business Suite Enablement - Service | Yes
 JOBD | Technical Job Definition | Yes
 LPDC | Launchpad short texts | [#107](https://github.com/larshp/abapGit/issues/107)
 MSAG | Message Class | Yes
@@ -115,6 +120,8 @@ WDYN | Web Dynpro Component | Yes
 WEBI | Virtual End Point | Yes
 XINX | Extension Index | Yes
 XSLT | Transformation | Yes
+
+If additional object types are required please open an [issue](https://github.com/larshp/abapGit/issues)
 
 Support for customizing planned, see [#1004](https://github.com/larshp/abapGit/issues/1004)
 
